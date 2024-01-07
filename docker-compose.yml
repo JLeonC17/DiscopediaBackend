@@ -8,6 +8,8 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    depends_on:
+      - mysql
     working_dir: /opt/src
     environment:
       - GIN_MODE=release
@@ -15,3 +17,13 @@ services:
       - ./src:/opt/src
       - ./sql:/opt/sql
     entrypoint: ["sh", "-c", "cd /opt/src && chmod +x init.sh && sh init.sh"]
+
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    env_file: ./sql/.env
+    volumes:
+      - ./sql/data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
