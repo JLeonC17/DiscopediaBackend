@@ -22,6 +22,7 @@ type Album struct {
 }
 
 func main() {
+	fmt.Print("\n\nReady to Go! :)\n\n")
 	router := gin.Default()
 
 	config := cors.DefaultConfig()
@@ -30,7 +31,7 @@ func main() {
 
 	router.GET("/api/discogs", discogsController)
 
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
 
 func goDotEnvVariable(key string) string {
@@ -114,13 +115,6 @@ func processAlbums(resultsArray []interface{}) []Album {
 	albums := make([]Album, 0)
 
 	for _, result := range resultsArray {
-
-		jsonResults, err := json.MarshalIndent(result, "", "    ")
-		if err != nil {
-			fmt.Printf("Error al convertir a JSON: %v\n", err)
-		}
-
-		fmt.Println(string(jsonResults))
 
 		if resultData, ok := result.(map[string]interface{}); ok && result != nil {
 			title := getStringValue(resultData["title"])

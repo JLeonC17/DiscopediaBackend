@@ -1,0 +1,17 @@
+# based on https://github.com/callicoder/go-docker-compose
+version: '3'
+
+services:
+
+  discopediaBackend:
+    image: golang:1.21.5-alpine3.19
+    ports:
+      - "8080:8080"
+    restart: always
+    working_dir: /opt/src
+    environment:
+      - GIN_MODE=release
+    volumes:
+      - ./src:/opt/src
+      - ./sql:/opt/sql
+    entrypoint: ["sh", "-c", "cd /opt/src && chmod +x init.sh && sh init.sh"]
