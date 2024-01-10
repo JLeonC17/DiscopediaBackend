@@ -82,6 +82,7 @@ func filterAlbums(resultsArray []interface{}) []interface{} {
 				!strings.Contains(strings.Join(formatStrings, ""), "White Label") &&
 				!strings.Contains(strings.Join(formatStrings, ""), "Promo") &&
 				!strings.Contains(strings.Join(formatStrings, ""), "Single") &&
+				!strings.Contains(strings.Join(formatStrings, ""), "PlayTape") &&
 				!strings.Contains(strings.Join(formatStrings, ""), "Maxi-Single") &&
 				(strings.Contains(strings.Join(formatStrings, ""), "Album") ||
 					strings.Contains(strings.Join(formatStrings, ""), "LP") ||
@@ -110,7 +111,25 @@ func getStringValue(data interface{}) string {
 	return ""
 }
 
+func saveResultsToFile(resultsArray []interface{}, filename string) {
+	jsonResults, err := json.MarshalIndent(resultsArray, "", "    ")
+	if err != nil {
+		fmt.Printf("Error al convertir a JSON: %v\n", err)
+		return
+	}
+
+	err = os.WriteFile(filename, jsonResults, 0644)
+	if err != nil {
+		fmt.Printf("Error al escribir en el archivo: %v\n", err)
+		return
+	}
+
+	fmt.Printf("Resultados guardados en %s\n", filename)
+}
+
 func processAlbums(resultsArray []interface{}) []Album {
+
+	saveResultsToFile(resultsArray, "lastResponseLog.json")
 
 	albums := make([]Album, 0)
 

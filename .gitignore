@@ -1,7 +1,8 @@
 # Go related files
 src/.env
 src/discopedia
+src/*.json
 
-# MariaDB related files
+# MySQL related files
 #sql/.env
 sql/data
